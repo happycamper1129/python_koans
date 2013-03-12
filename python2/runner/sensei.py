@@ -4,6 +4,7 @@
 import unittest
 import re
 import sys
+import os
 import glob
 
 import helper
@@ -18,7 +19,7 @@ class Sensei(MockableTestResult):
         unittest.TestResult.__init__(self)
         self.stream = stream
         self.prevTestClassName = None
-        self.tests = path_to_enlightenment.koans()        
+        self.tests = path_to_enlightenment.koans()
         self.pass_count = 0
         self.lesson_pass_count  = 0
         self.all_lessons = None
@@ -36,12 +37,12 @@ class Sensei(MockableTestResult):
                     self.lesson_pass_count += 1
 
     def addSuccess(self, test):
-        if self.passesCount():            
+        if self.passesCount():
             MockableTestResult.addSuccess(self, test)
             self.stream.writeln( \
                 "  {0}{1}{2} has expanded your awareness.{3}{4}" \
                 .format(Fore.GREEN, Style.BRIGHT, test._testMethodName, \
-                Fore.RESET, Style.NORMAL))      
+                Fore.RESET, Style.NORMAL))
             self.pass_count += 1
 
     def addError(self, test, err):
@@ -52,7 +53,7 @@ class Sensei(MockableTestResult):
     def passesCount(self):
         return not (self.failures and helper.cls_name(self.failures[0][0]) !=
                     self.prevTestClassName)
-        
+
     def addFailure(self, test, err):
         MockableTestResult.addFailure(self, test, err)
 
@@ -64,31 +65,31 @@ class Sensei(MockableTestResult):
                 if m:
                     tup = (int(m.group(0)), test, err)
                     table.append(tup)
-               
+
         if table:
             return sorted(table)
         else:
             return None
-         
+
     def firstFailure(self):
         if not self.failures: return None
-        
+
         table = self.sortFailures(helper.cls_name(self.failures[0][0]))
-            
+
         if table:
             return (table[0][1], table[0][2])
         else:
             return None
-    
+
     def learn(self):
         self.errorReport()
-    
+
         self.stream.writeln("")
         self.stream.writeln("")
         self.stream.writeln(self.report_progress())
         self.stream.writeln("")
         self.stream.writeln(self.say_something_zenlike())
-        
+
         if self.failures: sys.exit(-1)
         self.stream.writeln(
             "\n{0}**************************************************" \
@@ -97,13 +98,13 @@ class Sensei(MockableTestResult):
             .format(Fore.MAGENTA))
         self.stream.writeln(
             "\nIf you want more, take a look at about_extra_credit_task.py")
-        
+
     def errorReport(self):
         problem = self.firstFailure()
-        if not problem: return 
-        test, err = problem 
+        if not problem: return
+        test, err = problem
         self.stream.writeln("  {0}{1}{2} has damaged your "
-          "karma.".format(Fore.RED, Style.BRIGHT, test._testMethodName))        
+          "karma.".format(Fore.RED, Style.BRIGHT, test._testMethodName))
 
         self.stream.writeln("\n{0}{1}You have not yet reached enlightenment ..." \
             .format(Fore.RESET, Style.NORMAL))
@@ -124,7 +125,7 @@ class Sensei(MockableTestResult):
             m = re.search("^[^^ ].*$",line)
             if m and m.group(0):
                 count+=1
-            
+
             if count>1:
                 error_text += ("  " + line.strip()).rstrip() + '\n'
         return error_text.strip('\n')
@@ -134,9 +135,9 @@ class Sensei(MockableTestResult):
             return ""
 
         lines = err.splitlines()
-        
+
         sep = '@@@@@SEP@@@@@'
-        
+
         scrape = ""
         for line in lines:
             m = re.search("^  File .*$",line)
@@ -146,9 +147,9 @@ class Sensei(MockableTestResult):
             m = re.search("^    \w(\w)+.*$",line)
             if m and m.group(0):
                 scrape += sep + line
-            
+
         lines = scrape.splitlines()
-                        
+
         scrape = ""
         for line in lines:
             m = re.search("^.*[/\\\\]koans[/\\\\].*$",line)
@@ -179,7 +180,7 @@ class Sensei(MockableTestResult):
             turn = self.pass_count % 37
 
             zenness = "";
-            if turn == 0:            
+            if turn == 0:
                 zenness = "Beautiful is better than ugly."
             elif turn == 1 or turn == 2:
                 zenness = "Explicit is better than implicit."
@@ -222,19 +223,20 @@ class Sensei(MockableTestResult):
             elif turn == 33 or turn == 34:
                 zenness = "If the implementation is easy to explain, " \
                           "it may be a good idea."
-            else: 
+            else:
                 zenness = "Namespaces are one honking great idea -- " \
                           "let's do more of those!"
-            return "{0}{1}{2}{3}".format(Fore.CYAN, zenness, Fore.RESET, Style.NORMAL); 
+            return "{0}{1}{2}{3}".format(Fore.CYAN, zenness, Fore.RESET, Style.NORMAL);
         else:
             return "{0}Nobody ever expects the Spanish Inquisition." \
                 .format(Fore.CYAN)
-        
+
         # Hopefully this will never ever happen!
         return "The temple in collapsing! Run!!!"
 
     def total_lessons(self):
         all_lessons = self.filter_all_lessons()
+
         if all_lessons:
           return len(all_lessons)
         else:
@@ -244,10 +246,10 @@ class Sensei(MockableTestResult):
         return self.tests.countTestCases()
 
     def filter_all_lessons(self):
+        cur_dir = os.path.split(os.path.realpath(__file__))[0]
         if not self.all_lessons:
-            self.all_lessons = glob.glob('koans/about*.py')
+            self.all_lessons = glob.glob('{0}/../koans/about*.py'.format(cur_dir))
             self.all_lessons = filter(lambda filename:
                                       "about_extra_credit" not in filename,
                                       self.all_lessons)
-            
         return self.all_lessons
