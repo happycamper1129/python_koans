@@ -52,8 +52,8 @@ need to install the Python interpreter.
 
 At this time of writing, there are two versions of the Python Koans:
 
-* one for use with Python 2.6 (it also works with Python 2.7)
-* one for Python 3.1.
+* one for use with Python 2.7 (earlier versions are no longer supported)
+* one for Python 3.1+.
 
 You should be able to work with newer Python versions, but older ones will
 likely give you problems.
@@ -133,7 +133,7 @@ Quoting the Ruby Koans instructions::
 	"In test-driven development the mantra has always been, red, green,
 	refactor. Write a failing test and run it (red), make the test pass
 	(green), then refactor it (that is look at the code and see if you
-	can make it any better. In this case you will need to run the koan
+	can make it any better). In this case you will need to run the koan
 	and see it fail (red), make the test pass (green), then take a
 	moment and reflect upon the test to see what it is teaching you
 	and improve the code to better communicate its intent (refactor)."
