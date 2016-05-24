@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import sys
-import os
-
 
 # Taken from legacy python unittest
 class WritelnDecorator:
@@ -15,6 +12,7 @@ class WritelnDecorator:
         return getattr(self.stream,attr)
 
     def writeln(self, arg=None):
-        if arg: self.write(arg)
-        self.write('\n') # text-mode streams translate to \r\n if needed
+        if arg:
+            self.write(arg)
+        self.write('\n')  # text-mode streams translate to \r\n if needed
 
