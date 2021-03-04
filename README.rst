@@ -105,7 +105,7 @@ Apparently a test failed::
 
     AssertionError: False is not True
 
-It also tells me exactly where the problem is, it's an assert on line 12
+It also tells me exactly where the problem in, its an assert on line 12
 of .\\koans\\about_asserts.py. This one is easy, just change False to True to
 make the test pass.
 
@@ -145,11 +145,11 @@ On Linux::
 On Windows::
 
     $ pip install pywin32
+
+    Also available here:
     
-(If that failed, try::
-    
-    $ pip install pypiwin32
-)
+    https://github.com/mhammond/pywin32/releases
+
 
 On Mac OS X::
 

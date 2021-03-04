@@ -35,7 +35,7 @@ class AboutNone(Koan):
         #
         # Need a recap on how to evaluate __class__ attributes?
         #
-        #     https://github.com/gregmalcolm/python_koans/wiki/Class-Attribute
+        #     http://bit.ly/__class__
 
         self.assertEqual(__, ex2.__class__)
 

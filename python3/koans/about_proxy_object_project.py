@@ -56,6 +56,7 @@ class AboutProxyObjectProject(Koan):
     def test_proxy_handles_invalid_messages(self):
         tv = Proxy(Television())
 
+        ex = None
         with self.assertRaises(AttributeError):
             tv.no_such_method()
 
